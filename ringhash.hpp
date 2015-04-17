@@ -155,7 +155,7 @@ public:
       cout << x.second.size() << " ";
       total += x.second.size();
     }
-    cout << "Total load is " << total; 
+    cout << "Total load is " << total << endl; 
   }
 
 };
