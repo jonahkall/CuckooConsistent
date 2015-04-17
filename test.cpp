@@ -16,5 +16,9 @@ int main ()
   for (int i = 1; i < 100; ++i)
   	r.insert(i);
   r.print_loads();
+  cout << endl;
+  for (int i = 1; i < 100; ++i)
+  	r.remove(i);
+  r.print_loads();
   return 0;
 }

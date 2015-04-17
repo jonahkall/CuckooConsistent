@@ -46,7 +46,8 @@ public:
   }
 
   void remove(int key) {
-    (void)key;
+    server_id tmp = lookup(key);
+    cache_indices_[tmp].erase(key); 
   }
 
   server_id lookup (int key) {
