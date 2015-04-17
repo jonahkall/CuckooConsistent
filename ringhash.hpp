@@ -9,13 +9,14 @@
 #include <set>
 #include <functional>
 #include <map>
+#include <vector>
 
 using namespace std;
 
 class RingHash {
 private: 
   typedef int server_id;
-  typedef std::map<unsigned int, std::set<int> > MapType;
+  typedef std::map<unsigned int, std::vector<int> > MapType;
   typedef MapType::iterator MapIterator;
   // This is a red-black tree. O(log n) insertions,
   // deletions, and lookups.
@@ -37,7 +38,7 @@ public:
       kss_(key_space_size), num_servers_(init_servers) {
     // Set up keyspace now
     for (int i = 0; i < init_servers; ++i) {
-      cache_indices_.insert(std::make_pair(i* (key_space_size/init_servers), std::set<int>()));
+      cache_indices_.insert(std::make_pair(i* (key_space_size/init_servers), std::vector<int>()));
     }
   }
 
@@ -47,17 +48,27 @@ public:
    */
   void insert (int key) {
     server_id tmp = lookup(key);
-    cache_indices_[tmp].insert(key); 
+    cache_indices_[tmp].push_back(key); 
   }
 
   /**
    * #param the key that is being removed
    * @brief removes a key into the HashRing
    */
-
   void remove(int key) {
     server_id tmp = lookup(key);
-    cache_indices_[tmp].erase(key); 
+    std::vector<int>::iterator it;
+
+    std::vector<int> vals = cache_indices_[tmp];
+
+    for (it=vals.begin(); it != vals.end(); ++it){
+      if (*it == key) {
+        vals.erase(it);
+        break;
+      }
+    }
+
+    //cache_indices_[tmp].erase(key); 
   }
 
   /**
@@ -81,18 +92,18 @@ public:
   void add_server(int server_loc) {
     ++num_servers_;
 
-    std::set<int>::iterator it;
+    std::vector<int>::iterator it;
 
     server_id server_to_bump = cache_indices_.lower_bound(server_loc)->first; // note that this works since we are putting the new server at the location of its hash
 
     // make a copy of the set
-    std::set<int> keys_to_bump(cache_indices_[server_to_bump]);
+    std::vector<int> keys_to_bump(cache_indices_[server_to_bump]);
 
     // clear the original one
     cache_indices_[server_to_bump].clear();
 
     // add the new server
-    cache_indices_.insert(std::make_pair(server_loc, std::set<int>()));
+    cache_indices_.insert(std::make_pair(server_loc, std::vector<int>()));
 
     // rehash the keys
     for (it=keys_to_bump.begin(); it != keys_to_bump.end(); ++it){
@@ -108,10 +119,10 @@ public:
    */
   void remove_server(server_id s) {
 
-    std::set<int>::iterator it;
+    std::vector<int>::iterator it;
 
     // make a copy of the keys in the server that will be removed
-    std::set<int> keys_to_bump(cache_indices_[s]);
+    std::vector<int> keys_to_bump(cache_indices_[s]);
 
     // remove the given server
     cache_indices_.erase(s);
