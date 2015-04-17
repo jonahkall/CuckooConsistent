@@ -20,10 +20,14 @@ int main ()
   // add a bunch of values to it
   for (int i = 1; i < 100; ++i)
   	r.insert(i);
+
   //r.print_loads();
 
-  for (int i = 1; i < 100; ++i){
-    //r.remove(i);
+  for (int i = 1; i < 50000; ++i){
+    unsigned int first = r.lookup(i);
+    unsigned int second = r.lookup(i);
+    assert(first == second);
+    //cout << first << endl;
 
   }
 
@@ -37,8 +41,10 @@ int main ()
   cout << endl;
   
   // add a few servers to it
-  for (long long i = 1; i < 1000000000; i += 100000000)
+  for (long long i = 1; i < 1000000000; i += 100000000){
+    //cout << i << endl;
   	r.add_server(i);
+  }
 
   r.print_loads();
   cout << endl;
@@ -47,6 +53,8 @@ int main ()
   // remove a bunch of servers
   for (int i = 1; i < 100; ++i)
   	r.remove_server(r.lookup(i));
+
+  cout << endl;
 
   r.print_loads();
   cout << endl;
