@@ -14,7 +14,7 @@ using namespace std;
 class RingHash {
 private: 
   typedef int server_id;
-  typedef std::map<int, std::set<int> > MapType;
+  typedef std::map<unsigned int, std::set<int> > MapType;
   typedef MapType::iterator MapIterator;
   // This is a red-black tree. O(log n) insertions,
   // deletions, and lookups.
@@ -40,30 +40,51 @@ public:
     }
   }
 
+  /**
+   * #param the key that is being inserted
+   * @brief Inserts a key into the HashRing
+   */
   void insert (int key) {
     server_id tmp = lookup(key);
     cache_indices_[tmp].insert(key); 
   }
+
+  /**
+   * #param the key that is being removed
+   * @brief removes a key into the HashRing
+   */
 
   void remove(int key) {
     server_id tmp = lookup(key);
     cache_indices_[tmp].erase(key); 
   }
 
+  /**
+   * #param the key that is being looked up
+   * @brief Finds the server associated with a key
+   * @returns server_id of the associated server
+   */
   server_id lookup (int key) {
-    int tmp = hash(key);
+    unsigned int tmp = hash(key);
     MapIterator m = cache_indices_.lower_bound(tmp);
+    //cout << m->first << endl;
     return m->first;
   }
 
-  void add_server(server_id s) {
+
+  /**
+   * #param some representation of the server to be added
+   * @brief adds a server to the RingHash
+   * @returns void
+   */
+  void add_server(int server_loc) {
     ++num_servers_;
 
     std::set<int>::iterator it;
 
-    int server_loc = hash(s); // this can perhaps be user specified or determined some other way
+    //int server_loc = hash(s); // this can perhaps be user specified or determined some other way
 
-    server_id server_to_bump = lookup(s); // note that this works since we are putting the new server at the location of its hash
+    server_id server_to_bump = cache_indices_.lower_bound(server_loc)->first; // note that this works since we are putting the new server at the location of its hash
 
     // make a copy of the set
     std::set<int> keys_to_bump(cache_indices_[server_to_bump]);
@@ -81,13 +102,19 @@ public:
 
 
   }
-
+  /**
+   * #param the server_id of the server being removed
+   * @brief removes a server to the RingHash
+   * @returns void
+   */
   void remove_server(server_id s) {
 
-
     std::set<int>::iterator it;
+
+    // make a copy of the keys in the server that will be removed
     std::set<int> keys_to_bump(cache_indices_[s]);
 
+    // remove the given server
     cache_indices_.erase(s);
 
     // rehash the keys
@@ -99,9 +126,13 @@ public:
   }
 
   void print_loads(void) {
+    int total = 0;
     for (const auto&x : cache_indices_) {
-      cout << x.second.size();
+      //cout << x.first << " ";
+      cout << x.second.size() << " ";
+      total += x.second.size();
     }
+    cout << "Total load is " << total; 
   }
 
 };
