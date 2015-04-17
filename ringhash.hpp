@@ -73,7 +73,7 @@ public:
 
 
   /**
-   * #param some representation of the server to be added
+   * #param location where server will be put
    * @brief adds a server to the RingHash
    * @returns void
    */
@@ -81,8 +81,6 @@ public:
     ++num_servers_;
 
     std::set<int>::iterator it;
-
-    //int server_loc = hash(s); // this can perhaps be user specified or determined some other way
 
     server_id server_to_bump = cache_indices_.lower_bound(server_loc)->first; // note that this works since we are putting the new server at the location of its hash
 
@@ -123,6 +121,7 @@ public:
     }
 
     --num_servers_;
+
   }
 
   void print_loads(void) {
