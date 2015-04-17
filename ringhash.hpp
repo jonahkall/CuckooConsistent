@@ -18,6 +18,7 @@ private:
   typedef long long server_id;
   typedef std::map<long long, std::vector<int> > MapType;
   typedef MapType::iterator MapIterator;
+  typedef std::vector<int>::iterator VectorIterator;
   // This is a red-black tree. O(log n) insertions,
   // deletions, and lookups.
   // server to its load
@@ -59,10 +60,9 @@ public:
 
 
     server_id tmp = lookup(key);
-    std::vector<int>::iterator it;
+    VectorIterator it;
 
     std::vector<int> vals = cache_indices_[tmp];
-    //cout << "beginning" << cache_indices_[tmp].size() << endl;
 
     // iterate over the vector and remove the given key
     for (it=cache_indices_[tmp].begin(); it != cache_indices_[tmp].end(); ++it){
@@ -95,7 +95,7 @@ public:
   void add_server(int server_loc) {
     ++num_servers_;
 
-    std::vector<int>::iterator it;
+    VectorIterator it;
 
     server_id server_to_bump = cache_indices_.lower_bound(server_loc)->first; // note that this works since we are putting the new server at the location of its hash
 
@@ -122,7 +122,7 @@ public:
    */
   void remove_server(server_id s) {
 
-    std::vector<int>::iterator it;
+    VectorIterator it;
 
     // make a copy of the keys in the server that will be removed
     std::vector<int> keys_to_bump(cache_indices_[s]);
