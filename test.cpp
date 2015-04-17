@@ -10,27 +10,33 @@ using namespace std;
 
 int main ()        
 {
+  // initialize ringhash
   RingHash r((1L << 32), 100);
   r.print_loads();
   cout << endl;
   cout << endl;
+
+  // add a bunch of values to it
   for (int i = 1; i < 100; ++i)
   	r.insert(i);
   r.print_loads();
+
   cout << endl;
   cout << endl;
   
-
+  // add a few servers to it
   for (long long i = 1; i < 1000000000; i += 100000000)
   	r.add_server(i);
+
   r.print_loads();
   cout << endl;
   cout << endl;
 
+  // remove a bunch of servers
   for (int i = 1; i < 100; ++i)
   	r.remove_server(r.lookup(i));
 
-   r.print_loads();
+  r.print_loads();
   cout << endl;
   cout << endl;
   return 0;

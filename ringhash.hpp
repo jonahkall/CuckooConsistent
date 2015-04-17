@@ -1,7 +1,8 @@
 /** @class RingHash
  * @brief A fast consistent hashing ring.
  *
- * 
+ * @author ankitvgupta
+ * @author jonahkall
  */
 #include <iostream>
 #include <string>
