@@ -83,7 +83,19 @@ public:
   }
 
   void remove_server(server_id s) {
-    (void)s;
+
+
+    std::set<int>::iterator it;
+    std::set<int> keys_to_bump(cache_indices_[s]);
+
+    cache_indices_.erase(s);
+
+    // rehash the keys
+    for (it=keys_to_bump.begin(); it != keys_to_bump.end(); ++it){
+      insert(*it);
+    }
+
+    --num_servers_;
   }
 
   void print_loads(void) {

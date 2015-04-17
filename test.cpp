@@ -20,9 +20,14 @@ int main ()
   
 
   for (int i = 1; i < 100; ++i)
-  	//r.remove(i);
   	r.add_server(i);
   r.print_loads();
+  cout << endl;
+
+  for (int i = 1; i < 100; ++i)
+  	r.remove_server(r.lookup(i));
+  
+   r.print_loads();
   cout << endl;
   return 0;
 }
