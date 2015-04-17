@@ -124,6 +124,9 @@ public:
 
   }
 
+  /**
+   * @brief Prints the loads on each server, separated by a comma, followed by the total load
+   */
   void print_loads(void) {
     int total = 0;
     for (const auto&x : cache_indices_) {
