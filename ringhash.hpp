@@ -58,7 +58,28 @@ public:
 
   void add_server(server_id s) {
     ++num_servers_;
-    (void)s;
+
+    std::set<int>::iterator it;
+
+    int server_loc = hash(s); // this can perhaps be user specified or determined some other way
+
+    server_id server_to_bump = lookup(s); // note that this works since we are putting the new server at the location of its hash
+
+    // make a copy of the set
+    std::set<int> keys_to_bump(cache_indices_[server_to_bump]);
+
+    // clear the original one
+    cache_indices_[server_to_bump].clear();
+
+    // add the new server
+    cache_indices_.insert(std::make_pair(server_loc, std::set<int>()));
+
+    // rehash the keys
+    for (it=keys_to_bump.begin(); it != keys_to_bump.end(); ++it){
+      insert(*it);
+    }
+
+
   }
 
   void remove_server(server_id s) {
