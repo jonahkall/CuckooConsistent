@@ -5,6 +5,7 @@
 #include <set>
 #include <functional>
 #include <map>
+#include <assert.h>
 
 using namespace std;
 
@@ -19,7 +20,18 @@ int main ()
   // add a bunch of values to it
   for (int i = 1; i < 100; ++i)
   	r.insert(i);
+  //r.print_loads();
+
+  for (int i = 1; i < 100; ++i){
+    //r.remove(i);
+
+  }
+
   r.print_loads();
+
+
+
+
 
   cout << endl;
   cout << endl;

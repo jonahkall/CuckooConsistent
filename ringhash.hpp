@@ -56,17 +56,26 @@ public:
    * @brief removes a key into the HashRing
    */
   void remove(int key) {
+
+
     server_id tmp = lookup(key);
     std::vector<int>::iterator it;
 
     std::vector<int> vals = cache_indices_[tmp];
+    //cout << "beginning" << cache_indices_[tmp].size() << endl;
 
-    for (it=vals.begin(); it != vals.end(); ++it){
+    for (it=cache_indices_[tmp].begin(); it != cache_indices_[tmp].end(); ++it){
       if (*it == key) {
-        vals.erase(it);
+        //cout << "Found it" << endl;
+        cache_indices_[tmp].erase(it);
         break;
       }
     }
+
+    //cout << "end" << cache_indices_[tmp].size() << endl;
+
+
+
 
     //cache_indices_[tmp].erase(key); 
   }
