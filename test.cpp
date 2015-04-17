@@ -17,7 +17,7 @@ int main ()
 
 
   // add a bunch of values to it
-  for (int i = 1; i < 100; ++i)
+  for (int i = 1; i < 1000; ++i)
   	r.insert(i);
 
 
@@ -26,7 +26,6 @@ int main ()
     unsigned int first = r.lookup(i);
     unsigned int second = r.lookup(i);
     assert(first == second);
-
 
   }
 
@@ -42,8 +41,11 @@ int main ()
   r.print_loads();
 
   // remove a bunch of servers
-  for (int i = 1; i < 100; ++i)
-  	r.remove_server(r.lookup(i));
+  for (int i = 1; i < 100; ++i){
+    r.remove_server(r.lookup(i));
+    //cout << "Worst server is: " << r.get_max_load_server() << endl;
+  }
+  	
 
 
 

@@ -15,8 +15,8 @@ using namespace std;
 
 class RingHash {
 private: 
-  typedef int server_id;
-  typedef std::map<unsigned int, std::vector<int> > MapType;
+  typedef long long server_id;
+  typedef std::map<long long, std::vector<int> > MapType;
   typedef MapType::iterator MapIterator;
   // This is a red-black tree. O(log n) insertions,
   // deletions, and lookups.
@@ -24,7 +24,7 @@ private:
   MapType cache_indices_;
   long long kss_;
   int num_servers_;
-  unsigned hash(long long a) const {
+  long long hash(long long a) const {
     a = (a+0x7ed55d16) + (a<<12);
     a = (a^0xc761c23c) ^ (a>>19);
     a = (a+0x165667b1) + (a<<5);
@@ -86,7 +86,8 @@ public:
    * @returns server_id of the associated server
    */
   server_id lookup (int key) {
-    unsigned int tmp = hash(key);
+    long long tmp = hash(key);
+    //cout << tmp << endl;
     MapIterator m = cache_indices_.lower_bound(tmp);
     //cout << m->first << endl;
     return m->first;
@@ -151,11 +152,28 @@ public:
   void print_loads(void) {
     int total = 0;
     for (const auto&x : cache_indices_) {
-      //cout << x.first << " ";
       cout << x.second.size() << " ";
       total += x.second.size();
     }
     cout << "Total load is " << total << endl; 
   }
+
+  /**
+   * @brief finds the server with the highest load
+   * @returns the server id of that server
+   */
+  server_id get_max_load_server(void){
+    server_id highest_server = 0;
+    int sz = 0;
+    for (const auto&x : cache_indices_) {
+      if (x.second.size() > sz) {
+        highest_server = x.first;
+        sz = x.second.size();
+      }
+    }
+    return highest_server;
+  }
+
+
 
 };
