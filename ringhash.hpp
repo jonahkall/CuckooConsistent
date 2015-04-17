@@ -41,7 +41,8 @@ public:
   }
 
   void insert (int key) {
-    (void)key;
+    server_id tmp = lookup(key);
+    cache_indices_[tmp].insert(key); 
   }
 
   void remove(int key) {

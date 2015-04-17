@@ -1,6 +1,6 @@
 // set::lower_bound/upper_bound
 #include <iostream>
-#include "ringhash.h"
+#include "ringhash.hpp"
 #include <string>
 #include <set>
 #include <functional>
@@ -11,6 +11,10 @@ using namespace std;
 int main ()        
 {
   RingHash r((1L << 32), 100);
+  r.print_loads();
+  cout << endl;
+  for (int i = 1; i < 100; ++i)
+  	r.insert(i);
   r.print_loads();
   return 0;
 }
