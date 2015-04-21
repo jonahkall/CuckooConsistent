@@ -13,8 +13,18 @@
 
 using namespace std;
 
+long long hashstd(long long a, long long kss_) {
+  a = (a+0x7ed55d16) + (a<<12);
+  a = (a^0xc761c23c) ^ (a>>19);
+  a = (a+0x165667b1) + (a<<5);
+  a = (a+0xd3a2646c) ^ (a<<9);
+  a = (a+0xfd7046c5) + (a<<3);
+  a = (a^0xb55a4f09) ^ (a>>16);
+  return abs(((a % kss_) + kss_) % kss_);
+}
+
 class RingHash {
-private: 
+private:
   typedef long long server_id;
   typedef std::map<long long, std::vector<int> > MapType;
   typedef MapType::iterator MapIterator;
@@ -25,22 +35,41 @@ private:
   MapType cache_indices_;
   long long kss_;
   int num_servers_;
-  long long hash(long long a) const {
-    a = (a+0x7ed55d16) + (a<<12);
-    a = (a^0xc761c23c) ^ (a>>19);
-    a = (a+0x165667b1) + (a<<5);
-    a = (a+0xd3a2646c) ^ (a<<9);
-    a = (a+0xfd7046c5) + (a<<3);
-    a = (a^0xb55a4f09) ^ (a>>16);
-    return abs(((a % kss_) + kss_) % kss_);
-  }
+  int num_keys_;
+  std::function<long long(long long, long long)> hash;
 public:
+  friend class CuckooRings;
   RingHash(long long key_space_size, int init_servers) :
       kss_(key_space_size), num_servers_(init_servers) {
+    num_keys_ = 0;
+    hash = hashstd;
     // Set up keyspace now
     for (int i = 0; i < init_servers; ++i) {
       cache_indices_.insert(std::make_pair(i* (key_space_size/init_servers), std::vector<int>()));
     }
+  }
+
+  RingHash(long long key_space_size, int init_servers,
+      std::function<long long(long long, long long)> hashfn) :
+      kss_(key_space_size), num_servers_(init_servers) {
+    num_keys_ = 0;
+    // Set up keyspace now
+    for (int i = 0; i < init_servers; ++i) {
+      cache_indices_.insert(std::make_pair(i* (key_space_size/init_servers), std::vector<int>()));
+    }
+    hash = hashfn;
+  }
+
+  ~RingHash() {
+    cout << "called ringhash destructor\n";
+  }
+
+  int size (void) {
+    return cache_indices_.size();
+  }
+
+  int num_keys(void) {
+    return num_keys_;
   }
 
   /**
@@ -48,6 +77,7 @@ public:
    * @brief Inserts a key into the HashRing
    */
   void insert (int key) {
+    ++num_keys_;
     server_id tmp = lookup(key);
     cache_indices_[tmp].push_back(key); 
   }
@@ -56,8 +86,7 @@ public:
    * #param the key that is being removed
    * @brief removes a key into the HashRing
    */
-  void remove(int key) {
-
+  void remove(long long key) {
 
     server_id tmp = lookup(key);
     VectorIterator it;
@@ -78,9 +107,9 @@ public:
    * @brief Finds the server associated with a key
    * @returns server_id of the associated server
    */
-  server_id lookup (int key) {
-    long long tmp = hash(key);
-    //cout << tmp << endl;
+  server_id lookup (long long key) {
+    long long tmp = hash(key, kss_);
+
     MapIterator m = cache_indices_.lower_bound(tmp);
     //cout << m->first << endl;
     return m->first;
@@ -94,10 +123,9 @@ public:
    */
   void add_server(int server_loc) {
     ++num_servers_;
-
     VectorIterator it;
-
-    server_id server_to_bump = cache_indices_.lower_bound(server_loc)->first; // note that this works since we are putting the new server at the location of its hash
+    server_id server_to_bump = cache_indices_.lower_bound(server_loc)->first;
+    // note that this works since we are putting the new server at the location of its hash
 
     // make a copy of the set
     std::vector<int> keys_to_bump(cache_indices_[server_to_bump]);
@@ -139,15 +167,30 @@ public:
 
   }
 
+  // For usage in CuckooRings
+  void remove_server_no_rehash(server_id s) {
+
+    VectorIterator it;
+
+    // make a copy of the keys in the server that will be removed
+    std::vector<int> keys_to_bump(cache_indices_[s]);
+
+    // remove the given server
+    cache_indices_.erase(s);
+
+    --num_servers_;
+  }
+
   /**
    * @brief Prints the loads on each server, separated by a comma, followed by the total load
    */
   void print_loads(void) {
     int total = 0;
     for (const auto&x : cache_indices_) {
-      cout << x.second.size() << " ";
+      cout << "Load on: " << x.first << " is: " << x.second.size() << "\n";
       total += x.second.size();
     }
+    cout << "Max load server is: " << get_max_load_server() << "\n";
     cout << "Total load is " << total << endl; 
   }
 
@@ -167,6 +210,8 @@ public:
     return highest_server;
   }
 
-
+  vector<int>& get_keys(server_id s) {
+    return cache_indices_[s];
+  }
 
 };
