@@ -166,6 +166,12 @@ public:
     --num_servers_;
 
   }
+    
+  // TODO: test this
+  void clear_server(server_id s) {
+    cache_indices_[s].clear();
+    return
+  }
 
   // For usage in CuckooRings
   void remove_server_no_rehash(server_id s) {
