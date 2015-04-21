@@ -170,7 +170,7 @@ public:
   // TODO: test this
   void clear_server(server_id s) {
     cache_indices_[s].clear();
-    return
+    return;
   }
 
   // For usage in CuckooRings
