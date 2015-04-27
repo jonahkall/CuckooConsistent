@@ -11,6 +11,8 @@
 #include <map>
 #include <vector>
 
+#define SERVER_THRESHOLD 7
+
 using namespace std;
 
 long long hashstd(long long a, long long kss_) {
@@ -26,7 +28,7 @@ long long hashstd(long long a, long long kss_) {
 class RingHash {
 private:
   typedef long long server_id;
-  typedef std::map<long long, std::vector<int> > MapType;
+  typedef std::map<unsigned long long, std::vector<int> > MapType;
   typedef MapType::iterator MapIterator;
   typedef std::vector<int>::iterator VectorIterator;
   // This is a red-black tree. O(log n) insertions,
@@ -45,7 +47,8 @@ public:
     hash = hashstd;
     // Set up keyspace now
     for (int i = 0; i < init_servers; ++i) {
-      cache_indices_.insert(std::make_pair(i* (key_space_size/init_servers), std::vector<int>()));
+      cache_indices_.insert(std::make_pair(i* (key_space_size/init_servers),
+          std::vector<int>()));
     }
   }
 
@@ -55,7 +58,8 @@ public:
     num_keys_ = 0;
     // Set up keyspace now
     for (int i = 0; i < init_servers; ++i) {
-      cache_indices_.insert(std::make_pair(i* (key_space_size/init_servers), std::vector<int>()));
+      cache_indices_.insert(std::make_pair(i* (key_space_size/init_servers),
+          std::vector<int>()));
     }
     hash = hashfn;
   }
@@ -76,10 +80,17 @@ public:
    * #param the key that is being inserted
    * @brief Inserts a key into the HashRing
    */
-  void insert (int key) {
+   // return -1 if insertion is fine, serverid otherwise
+  server_id insert (int key) {
     ++num_keys_;
     server_id tmp = lookup(key);
     cache_indices_[tmp].push_back(key); 
+    if (cache_indices_[tmp].size() > SERVER_THRESHOLD) {
+      return tmp;
+    }
+    else {
+      return -1;
+    }
   }
 
   /**

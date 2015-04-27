@@ -42,7 +42,7 @@ public:
   //TODO: this better be a more different hash function lol
   static
   long long hash_right(long long a, long long kss_) {
-    a = (a+0x7ed55d16) + (a<<12);
+    a = (a+0x7ed55d15) + (a<<12);
     a = (a^0xc741c20c) ^ (a>>19);
     a = (a+0x125667b1) + (a<<5);
     a = (a+0xf3a2646c) ^ (a<<9);
@@ -64,29 +64,57 @@ public:
    * @brief Inserts a key into the HashRing
    */
   void insert (int key) {
+    // if (left_ring_->num_keys() > right_ring_->num_keys()) {
+    //   right_ring_->insert(key);
+    //   return;
+    // }
+    //left_ring_->insert(key);
+    server_id ret;
     if (left_ring_->num_keys() > right_ring_->num_keys()) {
-      right_ring_->insert(key);
+      ret = right_ring_->insert(key);
+      if (ret != -1) {
+        cout << "sending over\n";
+        send_server_rtol(ret);
+      }
     }
     else {
-      left_ring_->insert(key);
+      ret = left_ring_->insert(key);
+      if (ret != -1) {
+        cout << "sending over\n";
+        send_server_ltor(ret);
+      }
     }
   }
 
   // Sends a particular server id's keys over to the other server.
-  void send_server_ltor(int server_id) {
-    vector<int>& lserver = left_ring_->get_keys(server_id);
+  void send_server_ltor(server_id s) {
+    cout << "send l to r\n";
+    server_id ret;
+    vector<server_id> to_send;
+    vector<int>& lserver = left_ring_->get_keys(s);
     for (const auto& i : lserver) {
-      right_ring_->insert(i);
+      ret = right_ring_->insert(i);
+      if (ret != -1) {
+        to_send.push_back(ret);
+      }
     }
-    left_ring_->remove_server(server_id);
+    left_ring_->clear_server(s);
+    for (const auto& server : to_send) {
+      send_server_rtol(server);
+    }
   }
 
-  void send_server_rtol(int server_id) {
-    vector<int>& rserver = right_ring_->get_keys(server_id);
+  void send_server_rtol(server_id s) {
+    cout << "send r to l\n";
+    server_id ret;
+    vector<int>& rserver = right_ring_->get_keys(s);
     for (const auto& i : rserver) {
-      left_ring_->insert(i);
+      ret = left_ring_->insert(i);
+      if (ret != -1) {
+        send_server_ltor(ret);
+      }
     }
-    right_ring_->remove_server_no_rehash(server_id);
+    right_ring_->clear_server(s);
   }
 
   /**
