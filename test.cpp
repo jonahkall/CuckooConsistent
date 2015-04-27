@@ -46,21 +46,28 @@ int main ()
   // r.print_loads();
   // cout << endl;
   // cout << endl;
+  RingHash r((1L << 32), 1000000);
+  for (int i = 1; i < 1000000; ++i) {
+    r.insert(i);
+  }
 
   cout << "Beginning CuckooRings testing proper\n\n\n";
 
-  CuckooRings c((1L << 32), 200);
-  for (int i = 1; i < 1000; ++i)
+  CuckooRings c((1L << 32), 500000);
+  for (int i = 1; i < 1000000; ++i)
     c.insert(i);
+
+  cout << "cuckoo ring max load is: \n";
+  cout << c.get_max_load() << endl;
+
+  cout << "ring max load is: \n";
+  cout << r.get_max_load() << endl;
 
   //c.print_loads();
 
   //c.send_server_rtol(c.get_max_load_server());
 
-  cout << "Loads after sending a server from right to left are: \n\n";
-
-  //c.print_loads();
-
+  //cout << "Loads after sending a server from right to left are: \n\n";
 
   return 0;
 }

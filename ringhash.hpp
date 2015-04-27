@@ -11,7 +11,7 @@
 #include <map>
 #include <vector>
 
-#define SERVER_THRESHOLD 7
+#define SERVER_THRESHOLD 5
 
 using namespace std;
 
@@ -225,6 +225,16 @@ public:
       }
     }
     return highest_server;
+  }
+
+  long long get_max_load(void) {
+    int sz = 0;
+    for (const auto&x : cache_indices_) {
+      if (x.second.size() > sz) {
+        sz = x.second.size();
+      }
+    }
+    return sz;
   }
 
   vector<int>& get_keys(server_id s) {

@@ -15,6 +15,8 @@
 
 #include "ringhash.hpp"
 
+#define STOP_ITERS 8
+
 class CuckooRings {
 private:
   typedef long long server_id;
@@ -27,6 +29,7 @@ private:
   int num_servers_;
   RingHash* left_ring_;
   RingHash* right_ring_;
+  unsigned insert_counter;
 public:
   static
   long long hash_left(long long a, long long kss_) {
@@ -69,18 +72,19 @@ public:
     //   return;
     // }
     //left_ring_->insert(key);
+    insert_counter = 0;
     server_id ret;
     if (left_ring_->num_keys() > right_ring_->num_keys()) {
       ret = right_ring_->insert(key);
       if (ret != -1) {
-        cout << "sending over\n";
+        //cout << "sending over\n";
         send_server_rtol(ret);
       }
     }
     else {
       ret = left_ring_->insert(key);
       if (ret != -1) {
-        cout << "sending over\n";
+        //cout << "sending over\n";
         send_server_ltor(ret);
       }
     }
@@ -88,7 +92,12 @@ public:
 
   // Sends a particular server id's keys over to the other server.
   void send_server_ltor(server_id s) {
-    cout << "send l to r\n";
+    ++insert_counter;
+    if (insert_counter > STOP_ITERS) {
+      cout << "gave up\n";
+      return;
+    }
+    //cout << "send l to r\n";
     server_id ret;
     vector<server_id> to_send;
     vector<int>& lserver = left_ring_->get_keys(s);
@@ -105,7 +114,11 @@ public:
   }
 
   void send_server_rtol(server_id s) {
-    cout << "send r to l\n";
+    ++insert_counter;
+    if (insert_counter > STOP_ITERS) {
+      return;
+    }
+    //cout << "send r to l\n";
     server_id ret;
     vector<int>& rserver = right_ring_->get_keys(s);
     for (const auto& i : rserver) {
@@ -164,11 +177,11 @@ public:
    * @brief finds the server with the highest load
    * @returns the server id of that server
    */
-  server_id get_max_load_server(void){
+  long long get_max_load(void){
     // just take the max of the two
 
     // NOTE: this is currently wrong!!!!!!!!!!!!
     // just for testing
-    return right_ring_->get_max_load_server();
+    return max(right_ring_->get_max_load(), left_ring_->get_max_load());
   }
 };
