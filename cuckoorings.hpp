@@ -192,7 +192,6 @@ public:
   }
 
   long long get_min_load(void){
-
     return min(left_ring_->get_min_load(), left_ring_->get_min_load());
   }
 };
