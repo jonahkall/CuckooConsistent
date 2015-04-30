@@ -59,9 +59,14 @@ int main ()
 
   cout << "cuckoo ring max load is: \n";
   cout << c.get_max_load() << endl;
+  
+
 
   cout << "ring max load is: \n";
   cout << r.get_max_load() << endl;
+  cout << "ring variance of loads is: \n";
+  cout << r.get_variance_load() << endl;
+
 
   //c.print_loads();
 

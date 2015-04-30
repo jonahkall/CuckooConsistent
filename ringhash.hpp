@@ -9,6 +9,7 @@
 #include <set>
 #include <functional>
 #include <map>
+#include <math.h>
 #include <vector>
 
 #define SERVER_THRESHOLD 5
@@ -246,6 +247,29 @@ public:
     }
     return sz;
   }  
+
+  float get_avg_load(void){
+    long long tot = 0;
+    for (const auto&x : cache_indices_) {
+      tot += x.second.size();
+    }
+    //cout << tot << endl;
+    //cout << size() << endl;
+    float avg = ((float) tot)/((float) size());
+    //cout << avg << endl;
+    return avg;
+  }
+
+  long long get_variance_load(void){
+    float tot = 0;
+    float avg = get_avg_load();
+    float sz = (float) size();
+    for (const auto&x : cache_indices_) {
+      tot += pow((((float) x.second.size()) - avg), 2.0);
+    }
+    return tot/sz;
+
+  }
 
   vector<int>& get_keys(server_id s) {
     return cache_indices_[s];
