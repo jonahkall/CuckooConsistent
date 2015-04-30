@@ -237,6 +237,16 @@ public:
     return sz;
   }
 
+  long long get_min_load(void) {
+    int sz = 99999999;
+    for (const auto&x : cache_indices_) {
+      if (x.second.size() < sz) {
+        sz = x.second.size();
+      }
+    }
+    return sz;
+  }  
+
   vector<int>& get_keys(server_id s) {
     return cache_indices_[s];
   }

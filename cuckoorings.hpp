@@ -184,4 +184,9 @@ public:
     // just for testing
     return max(right_ring_->get_max_load(), left_ring_->get_max_load());
   }
+
+  long long get_min_load(void){
+
+    return min(left_ring_->get_min_load(), left_ring_->get_min_load());
+  }
 };
