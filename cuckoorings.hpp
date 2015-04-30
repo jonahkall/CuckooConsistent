@@ -116,18 +116,24 @@ public:
   void send_server_rtol(server_id s) {
     ++insert_counter;
     if (insert_counter > STOP_ITERS) {
+      cout << "Gave up\n";
       return;
     }
     //cout << "send r to l\n";
     server_id ret;
+    vector<server_id> to_send;
     vector<int>& rserver = right_ring_->get_keys(s);
     for (const auto& i : rserver) {
       ret = left_ring_->insert(i);
       if (ret != -1) {
-        send_server_ltor(ret);
+        to_send.push_back(ret);
+        //send_server_ltor(ret);
       }
     }
     right_ring_->clear_server(s);
+    for (const auto& server : to_send) {
+      send_server_ltor(server);
+    }
   }
 
   /**
