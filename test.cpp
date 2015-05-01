@@ -4,6 +4,7 @@
 #include <set>
 #include <functional>
 #include <map>
+#include <time.h>
 #include <assert.h>
 
 #include "cuckoorings.hpp"
@@ -12,6 +13,7 @@ using namespace std;
 
 int main ()        
 {
+  clock_t t1, t2, t3;
   // // initialize ringhash
   // RingHash r((1L << 32), 100);
   // r.print_loads();
@@ -46,26 +48,33 @@ int main ()
   // r.print_loads();
   // cout << endl;
   // cout << endl;
+
+  t1 = clock();
+  cout << "\nAdding to a standard ring" << endl;
+  
   RingHash r((1L << 32), 1000000);
   for (int i = 1; i < 1000000; ++i) {
     r.insert(i);
   }
 
-  cout << "Beginning CuckooRings testing proper\n\n\n";
-
+  t2 = clock();
+  cout << "Adding to CuckooRings \n\n\n";
+  
   CuckooRings c((1L << 32), 500000);
   for (int i = 1; i < 1000000; ++i)
     c.insert(i);
 
-  cout << "cuckoo ring max load is: \n";
-  cout << c.get_max_load() << endl;
+  t3 = clock();
+
+
+  cout << "cuckoo ring max load is:" << c.get_max_load() << endl;
+  cout << "Cuckoo ring time elapsed (sec): " << ((float) (t3 - t2))/CLOCKS_PER_SEC << "\n\n" << endl; 
   
 
 
-  cout << "ring max load is: \n";
-  cout << r.get_max_load() << endl;
-  cout << "ring variance of loads is: \n";
-  cout << r.get_variance_load() << endl;
+  cout << "ring max load is: " << r.get_max_load() << endl;
+  cout << "ring variance of loads is:" << r.get_variance_load() << endl;
+  cout << "Standard ring time elapsed (sec): " << ((float) (t2 - t1))/CLOCKS_PER_SEC << "\n\n" << endl; 
 
 
   //c.print_loads();
