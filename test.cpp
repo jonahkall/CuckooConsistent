@@ -6,6 +6,7 @@
 #include <map>
 #include <time.h>
 #include <assert.h>
+#include <stdlib.h>
 
 #include "cuckoorings.hpp"
 
@@ -48,6 +49,8 @@ int main ()
   // r.print_loads();
   // cout << endl;
   // cout << endl;
+  srand (time(NULL));
+
 
   t1 = clock();
   cout << "\nTesting a standard ring" << endl;
