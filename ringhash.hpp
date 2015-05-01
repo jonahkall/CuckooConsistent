@@ -109,6 +109,7 @@ public:
     for (it=cache_indices_[tmp].begin(); it != cache_indices_[tmp].end(); ++it){
       if (*it == key) {
         cache_indices_[tmp].erase(it);
+        --num_keys_;
         break;
       }
     }
@@ -134,7 +135,7 @@ public:
    * @returns void
    */
   void add_server(int server_loc) {
-    ++num_servers_;
+    
     VectorIterator it;
     server_id server_to_bump = cache_indices_.lower_bound(server_loc)->first;
     // note that this works since we are putting the new server at the location of its hash
@@ -147,6 +148,7 @@ public:
 
     // add the new server
     cache_indices_.insert(std::make_pair(server_loc, std::vector<int>()));
+    ++num_servers_;
 
     // rehash the keys
     for (it=keys_to_bump.begin(); it != keys_to_bump.end(); ++it){
@@ -292,6 +294,22 @@ public:
       cost += costfunction(x.second.size());
     }
     return cost;
+  }
+
+  long long getNumKeys(void){
+    long long tot = 0;
+    for (const auto&x : cache_indices_) {
+      tot += x.second.size();
+    }
+    return tot;
+  }
+
+  long long getNumServers(void){
+    long long tot = 0;
+    for (const auto&x : cache_indices_) {
+      tot += 1;
+    }
+    return tot;
   }
 
   vector<int>& get_keys(server_id s) {

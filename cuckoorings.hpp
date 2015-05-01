@@ -206,4 +206,13 @@ public:
   long long get_min_load(void){
     return min(left_ring_->get_min_load(), left_ring_->get_min_load());
   }
+
+  long long getNumServers(void){
+    return (left_ring_->getNumServers() + right_ring_->getNumServers());
+  }
+
+  long long getNumKeys(void){
+    return (left_ring_->getNumKeys() + right_ring_->getNumKeys());
+  }
+
 };
