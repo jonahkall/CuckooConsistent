@@ -187,6 +187,10 @@ public:
     right_ring_->print_loads();
   }
 
+  long long cost_of_structure(void){
+    return (left_ring_->cost_of_structure() + right_ring_->cost_of_structure());
+  }
+
   /**
    * @brief finds the server with the highest load
    * @returns the server id of that server

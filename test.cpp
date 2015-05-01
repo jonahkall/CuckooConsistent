@@ -94,11 +94,13 @@ int main ()
   cout << "Standard Ring Results" << endl;
   cout << "    Max load is: " << r.get_max_load() << endl;
   cout << "    Variance of loads is:" << r.get_variance_load() << endl;
-  cout << "    Time elapsed (sec): " << ((float) (t2 - t1))/CLOCKS_PER_SEC << endl << endl; 
+  cout << "    Time elapsed (sec): " << ((float) (t2 - t1))/CLOCKS_PER_SEC << endl; 
+  cout << "    Cost: " << r.cost_of_structure() << endl << endl;
 
   cout << "Cuckoo Ring Results" << endl;
   cout << "    Max load is:" << c.get_max_load() << endl;
-  cout << "    Time elapsed (sec): " << ((float) (t3 - t2))/CLOCKS_PER_SEC << "\n" << endl; 
+  cout << "    Time elapsed (sec): " << ((float) (t3 - t2))/CLOCKS_PER_SEC << endl; 
+  cout << "    Cost: " << c.cost_of_structure() << endl << endl; 
   
 
 

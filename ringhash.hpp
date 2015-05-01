@@ -272,12 +272,26 @@ public:
 
   }
 
+  // Remove a random server from the Ring
   void remove_random_server(void){
 
     server_id s = lookup(rand() % kss_);
     remove_server(s);
 
     //cout << "random server id to delete: " << s << endl;
+  }
+
+  // Determines the cost of a particular server based on how many elements are in it
+  long long costfunction(int sz) {
+    return pow(sz, 2.0);
+  }
+  // Determine the cost of the ring (for example, having a squared penalty based on load)
+  long long cost_of_structure(void){
+    long long cost = 0;
+    for (const auto&x : cache_indices_) {
+      cost += costfunction(x.second.size());
+    }
+    return cost;
   }
 
   vector<int>& get_keys(server_id s) {
