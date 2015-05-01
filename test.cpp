@@ -50,31 +50,59 @@ int main ()
   // cout << endl;
 
   t1 = clock();
-  cout << "\nAdding to a standard ring" << endl;
+  cout << "\nTesting a standard ring" << endl;
   
   RingHash r((1L << 32), 1000000);
-  for (int i = 1; i < 1000000; ++i) {
+
+  // add 500K, then remove 2k, then add 500k
+  cout << "    adding 500,000 to the ring" << endl;
+  for (int i = 1; i < 500000; ++i) {
+    r.insert(i);
+  }
+
+  cout << "    randomly removing 2000 servers" << endl;
+  for (int rem = 0; rem < 2000; ++rem){
+    r.remove_random_server();
+  }
+  cout << "    adding 500,000 to the ring" << endl;
+  for (int i = 1; i < 500000; ++i) {
     r.insert(i);
   }
 
   t2 = clock();
-  cout << "Adding to CuckooRings \n\n\n";
+  cout << "\nTesting CuckooRings" << endl;
   
+  // add 500k, then remove 2k, then add 500k
   CuckooRings c((1L << 32), 500000);
-  for (int i = 1; i < 1000000; ++i)
+  cout << "    adding 500,000 to the CuckooRings" << endl;
+  for (int i = 1; i < 500000; ++i)
+    c.insert(i);
+
+  cout << "    randomly removing 2000 servers (1000 from each Ring)" << endl;
+  for (int rem = 0; rem < 1000; ++rem){
+    c.remove_random_server(0, 0);
+  }
+  for (int rem = 0; rem < 1000; ++rem){
+    c.remove_random_server(0, 1);
+  }
+  cout << "    adding 500,000 to the CuckooRings\n" << endl;
+  for (int i = 1; i < 500000; ++i)
     c.insert(i);
 
   t3 = clock();
 
+  cout << "Standard Ring Results" << endl;
+  cout << "    Max load is: " << r.get_max_load() << endl;
+  cout << "    Variance of loads is:" << r.get_variance_load() << endl;
+  cout << "    Time elapsed (sec): " << ((float) (t2 - t1))/CLOCKS_PER_SEC << endl << endl; 
 
-  cout << "cuckoo ring max load is:" << c.get_max_load() << endl;
-  cout << "Cuckoo ring time elapsed (sec): " << ((float) (t3 - t2))/CLOCKS_PER_SEC << "\n\n" << endl; 
+  cout << "Cuckoo Ring Results" << endl;
+  cout << "    Max load is:" << c.get_max_load() << endl;
+  cout << "    Time elapsed (sec): " << ((float) (t3 - t2))/CLOCKS_PER_SEC << "\n" << endl; 
   
 
 
-  cout << "ring max load is: " << r.get_max_load() << endl;
-  cout << "ring variance of loads is:" << r.get_variance_load() << endl;
-  cout << "Standard ring time elapsed (sec): " << ((float) (t2 - t1))/CLOCKS_PER_SEC << "\n\n" << endl; 
+  
 
 
   //c.print_loads();

@@ -94,7 +94,7 @@ public:
   void send_server_ltor(server_id s) {
     ++insert_counter;
     if (insert_counter > STOP_ITERS) {
-      cout << "gave up\n";
+      //cout << "gave up\n";
       return;
     }
     //cout << "send l to r\n";
@@ -116,7 +116,7 @@ public:
   void send_server_rtol(server_id s) {
     ++insert_counter;
     if (insert_counter > STOP_ITERS) {
-      cout << "Gave up\n";
+      //cout << "Gave up\n";
       return;
     }
     //cout << "send r to l\n";
@@ -165,8 +165,16 @@ public:
     (void)server_loc;
   }
 
-  void remove_server(server_id s) {
-    (void)s;
+  // removes from left if side = 0, from right if side = 1
+  void remove_random_server(server_id s, int side) {
+    (void) s;
+    if (side == 0){
+      left_ring_->remove_random_server();
+    }
+    else{
+      right_ring_->remove_random_server();
+    }
+    return;
   }
 
   /**

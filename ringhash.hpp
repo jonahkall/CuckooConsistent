@@ -12,7 +12,7 @@
 #include <math.h>
 #include <vector>
 
-#define SERVER_THRESHOLD 5
+#define SERVER_THRESHOLD 3
 
 using namespace std;
 
@@ -186,6 +186,7 @@ public:
   }
 
   // For usage in CuckooRings
+  // @Deprecated
   void remove_server_no_rehash(server_id s) {
 
     VectorIterator it;
@@ -269,6 +270,14 @@ public:
     }
     return tot/sz;
 
+  }
+
+  void remove_random_server(void){
+
+    server_id s = lookup(rand() % kss_);
+    remove_server(s);
+
+    //cout << "random server id to delete: " << s << endl;
   }
 
   vector<int>& get_keys(server_id s) {
