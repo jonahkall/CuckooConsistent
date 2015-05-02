@@ -12,7 +12,7 @@
 #include <math.h>
 #include <vector>
 
-#define SERVER_THRESHOLD 5
+#define SERVER_THRESHOLD 3
 
 using namespace std;
 
@@ -109,6 +109,7 @@ public:
     for (it=cache_indices_[tmp].begin(); it != cache_indices_[tmp].end(); ++it){
       if (*it == key) {
         cache_indices_[tmp].erase(it);
+        --num_keys_;
         break;
       }
     }
@@ -134,7 +135,7 @@ public:
    * @returns void
    */
   void add_server(int server_loc) {
-    ++num_servers_;
+    
     VectorIterator it;
     server_id server_to_bump = cache_indices_.lower_bound(server_loc)->first;
     // note that this works since we are putting the new server at the location of its hash
@@ -147,6 +148,7 @@ public:
 
     // add the new server
     cache_indices_.insert(std::make_pair(server_loc, std::vector<int>()));
+    ++num_servers_;
 
     // rehash the keys
     for (it=keys_to_bump.begin(); it != keys_to_bump.end(); ++it){
@@ -186,6 +188,7 @@ public:
   }
 
   // For usage in CuckooRings
+  // @Deprecated
   void remove_server_no_rehash(server_id s) {
 
     VectorIterator it;
@@ -269,6 +272,44 @@ public:
     }
     return tot/sz;
 
+  }
+
+  // Remove a random server from the Ring
+  void remove_random_server(void){
+    MapIterator m = cache_indices_.lower_bound(rand() % kss_);
+    server_id s =  m->first;
+    remove_server(s);
+
+    //cout << "random server id to delete: " << s << endl;
+  }
+
+  // Determines the cost of a particular server based on how many elements are in it
+  long long costfunction(int sz) {
+    return pow(sz, 2.0);
+  }
+  // Determine the cost of the ring (for example, having a squared penalty based on load)
+  long long cost_of_structure(void){
+    long long cost = 0;
+    for (const auto&x : cache_indices_) {
+      cost += costfunction(x.second.size());
+    }
+    return cost;
+  }
+
+  long long getNumKeys(void){
+    long long tot = 0;
+    for (const auto&x : cache_indices_) {
+      tot += x.second.size();
+    }
+    return tot;
+  }
+
+  long long getNumServers(void){
+    long long tot = 0;
+    for (const auto&x : cache_indices_) {
+      tot += 1;
+    }
+    return tot;
   }
 
   vector<int>& get_keys(server_id s) {
