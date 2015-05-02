@@ -17,6 +17,8 @@ for l in output:
 
 assert(len(ringtimes) == len(cuckootimes))
 
+plt.gca().set_color_cycle(['red', 'blue'])
+
 plt.plot(range(len(ringtimes)), ringtimes)
 plt.plot(range(len(cuckootimes)), cuckootimes)
 
