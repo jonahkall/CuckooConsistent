@@ -65,9 +65,7 @@ public:
     hash = hashfn;
   }
 
-  ~RingHash() {
-    cout << "called ringhash destructor\n";
-  }
+  ~RingHash() {}
 
   int size (void) {
     return cache_indices_.size();

@@ -1,4 +1,3 @@
-// set::lower_bound/upper_bound
 #include <iostream>
 #include <string>
 #include <set>
@@ -110,18 +109,7 @@ int main ()
   cout << "    Number of servers is: " << c.getNumServers() << endl;
   cout << "    Max load is: " << c.get_max_load() << endl;
   cout << "    Time elapsed (sec): " << ((float) (t3 - t2))/CLOCKS_PER_SEC << endl; 
-  cout << "    Cost: " << c.cost_of_structure() << endl << endl; 
-  
-
-
-  
-
-
-  //c.print_loads();
-
-  //c.send_server_rtol(c.get_max_load_server());
-
-  //cout << "Loads after sending a server from right to left are: \n\n";
+  cout << "    Cost: " << c.cost_of_structure() << endl << endl;
 
   return 0;
 }

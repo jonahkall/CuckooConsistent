@@ -191,11 +191,7 @@ public:
    * @brief finds the server with the highest load
    * @returns the server id of that server
    */
-  long long get_max_load(void){
-    // just take the max of the two
-
-    // NOTE: this is currently wrong!!!!!!!!!!!!
-    // just for testing
+  long long get_max_load(void) {
     return max(right_ring_->get_max_load(), left_ring_->get_max_load());
   }
 
