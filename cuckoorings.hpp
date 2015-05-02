@@ -161,6 +161,7 @@ public:
    */
    // NOTE: we should add these at some point but we cant punt them for
    // now because they aren't critical for our testing.
+   // return out the server id where the addition was done
   void add_server(int server_loc) {
     (void)server_loc;
   }
