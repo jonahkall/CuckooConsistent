@@ -124,6 +124,9 @@ public:
     long long tmp = hash(key, kss_);
 
     MapIterator m = cache_indices_.lower_bound(tmp);
+    if (m == cache_indices_.end()){
+      m = cache_indices_.begin();
+    }
     //cout << m->first << endl;
     return m->first;
   }
