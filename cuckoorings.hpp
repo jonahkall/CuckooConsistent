@@ -67,11 +67,6 @@ public:
    * @brief Inserts a key into the HashRing
    */
   void insert (int key) {
-    // if (left_ring_->num_keys() > right_ring_->num_keys()) {
-    //   right_ring_->insert(key);
-    //   return;
-    // }
-    //left_ring_->insert(key);
     insert_counter = 0;
     server_id ret;
     if (left_ring_->num_keys() > right_ring_->num_keys()) {

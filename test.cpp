@@ -81,6 +81,8 @@ int main ()
   for (int i = 1; i < 500000; ++i)
     c.insert(i);
 
+  cout << "Before removing any, we had: " << c.getNumServers() << " servers\n";
+
   cout << "    randomly removing 2000 servers (1000 from each Ring)" << endl;
   for (int rem = 0; rem < 1000; ++rem){
     c.remove_random_server(0, 0);

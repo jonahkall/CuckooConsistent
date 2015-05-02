@@ -275,6 +275,7 @@ public:
   }
 
   // Remove a random server from the Ring
+  //here
   void remove_random_server(void){
     MapIterator m = cache_indices_.lower_bound(rand() % kss_);
     server_id s =  m->first;
