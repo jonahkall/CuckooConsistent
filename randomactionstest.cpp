@@ -31,8 +31,11 @@ int main ()
     for (i = 0; i <= j; ++i) {
       int randnum = rand();
       double n = ((double) randnum / (RAND_MAX));
-      if (n < .2){
+      if (n < .1){
         r.remove_random_server();
+      }
+      else if (n < .2){
+        r.add_random_server();
       }
 
       r.insert(i);
@@ -41,9 +44,9 @@ int main ()
 
 
     t2 = clock();
-    cout << "Time of Ring (sec), " << ((float)(t2-t1))/CLOCKS_PER_SEC << endl;
-    cout << "Final Cost of Ring (sec), " << r.cost_of_structure() << endl;
-    cout << "Max Load of Ring (sec), " << r.get_max_load() << endl;
+    cout << ((float)(t2-t1))/CLOCKS_PER_SEC << ",";
+    cout << ((float) r.cost_of_structure()) / r.getNumServers() << ",";
+    cout << r.get_max_load() << endl;
     t1 = clock();
     for (i = 0; i <= j; ++i) {
       int randnum = rand();
@@ -51,13 +54,16 @@ int main ()
       if (n < .1){
         c.remove_random_server(0, (randnum % 2));
       }
+      else if (n < .2){
+        c.add_random_server(randnum % 2);
+      }
       c.insert(i);
     }
     t2 = clock();
 
-    cout << "Time of Cuckoo (sec), " << ((float)(t2-t1))/CLOCKS_PER_SEC << endl;
-    cout << "Final Cost of Cuckoo (sec), " << c.cost_of_structure() << endl;
-    cout << "Max Load of Cuckoo (sec), " << c.get_max_load() << endl << endl;
+    cout << ((float)(t2-t1))/CLOCKS_PER_SEC << ",";
+    cout << ((float) c.cost_of_structure()) / c.getNumServers() << ",";
+    cout << c.get_max_load() << endl;
   }
 
   return 0;

@@ -12,7 +12,7 @@
 #include <math.h>
 #include <vector>
 
-#define SERVER_THRESHOLD 3
+#define SERVER_THRESHOLD 2
 
 using namespace std;
 
@@ -320,6 +320,17 @@ public:
       tot += 1;
     }
     return tot;
+  }
+
+  void add_random_server(void){
+    int randnum = 0;
+
+    // make sure that the server is not already in there.
+    do {
+      randnum = rand();
+    } while (cache_indices_.find(randnum) != cache_indices_.end());
+
+    add_server(randnum);
   }
 
   vector<int>& get_keys(server_id s) {

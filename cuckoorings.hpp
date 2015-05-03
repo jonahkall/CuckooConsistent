@@ -207,4 +207,16 @@ public:
     return (left_ring_->getNumKeys() + right_ring_->getNumKeys());
   }
 
+  void add_random_server(int side){
+    side = side % 2;
+    if (side == 0) {
+      left_ring_->add_random_server();
+    }
+    else {
+      right_ring_->add_random_server();
+    }
+    return;
+
+  }
+
 };
