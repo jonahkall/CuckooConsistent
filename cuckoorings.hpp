@@ -14,6 +14,7 @@
 #include <vector>
 
 #include "ringhash.hpp"
+#include "farmhash.hpp"
 
 #define STOP_ITERS 8
 
@@ -31,8 +32,9 @@ private:
   RingHash* right_ring_;
   unsigned insert_counter;
 public:
+  /*
   static
-  long long hash_left(long long a, long long kss_) {
+  long long hash_right(long long a, long long kss_) {
     a = (a+0x7ed55d16) + (a<<12);
     a = (a^0xc761c23c) ^ (a>>19);
     a = (a+0x165667b1) + (a<<5);
@@ -41,18 +43,55 @@ public:
     a = (a^0xb55a4f09) ^ (a>>16);
     return abs(((a % kss_) + kss_) % kss_);
   }
+  */
 
   //TODO: this better be a more different hash function lol
   static
-  long long hash_right(long long a, long long kss_) {
+  long long hash_left(long long a, long long kss_) {
     a = (a+0x7ed55d15) + (a<<12);
     a = (a^0xc741c20c) ^ (a>>19);
     a = (a+0x125667b1) + (a<<5);
     a = (a+0xf3a2646c) ^ (a<<9);
     a = (a+0xfd7046c5) + (a<<3);
     a = (a^0xb55b4f09) ^ (a>>16);
+    if (a == 0){
+    cout << "This is bad hash" << endl;
+    }
+    //assert(a != 0);
     return abs(((a % kss_) + kss_) % kss_);
   }
+  /*
+  static
+  long long hash_left(long long key, long long kss_) {
+    util::uint128_t convert = util::Uint128(key, key);
+    long long res = util::Hash128to64(convert);
+    //assert(res != 0);
+    long long x = abs(((res % kss_) + kss_) % kss_);
+    //assert(x != 0);
+    return x;
+  }
+  */
+
+  
+  static
+  long long hash_right(long long key, long long kss_) {
+  key = (~key) + (key << 21); // key = (key << 21) - key - 1;
+  key = key ^ (key >> 24);
+  key = (key + (key << 3)) + (key << 8); // key * 265
+  key = key ^ (key >> 14);
+  key = (key + (key << 2)) + (key << 4); // key * 21
+  key = key ^ (key >> 28);
+  key = key + (key << 31);
+  
+  //assert(key != 0);
+  long long x = abs(((key % kss_) + kss_) % kss_);
+
+  //assert(x != 0);
+  return x;
+
+}
+
+
     // We add init_servers servers to both rings
   CuckooRings(long long key_space_size, int init_servers) :
       kss_(key_space_size) {
