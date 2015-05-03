@@ -341,6 +341,10 @@ public:
 
   // Remove a random server from the Ring
   //here
+  /**
+   * @brief, picks a server at random and removes it by calling remove_server
+   * @returns void
+   */
   void remove_random_server(void){
     MapIterator m = cache_indices_.lower_bound(rand() % kss_);
     if (m == cache_indices_.end()){
@@ -353,10 +357,18 @@ public:
   }
 
   // Determines the cost of a particular server based on how many elements are in it
+  /**
+   * @brief The penalty for a particular bin's load
+   * @returns long long representing this penalty
+   */
   long long costfunction(int sz) {
     return pow(sz, 2.0);
   }
   // Determine the cost of the ring (for example, having a squared penalty based on load)
+  /**
+   * @brief Uses the costfunction defined above to determine the total cost of the RingHash
+   * @return long long of the total cost
+   */ 
   long long cost_of_structure(void){
     long long cost = 0;
     for (const auto&x : cache_indices_) {
@@ -365,6 +377,10 @@ public:
     return cost;
   }
 
+  /**
+   * @brief determines the number of keys/jobs in the RIng
+   * @returns long long representing the number of keys
+   */
   long long getNumKeys(void){
     long long tot = 0;
     for (const auto&x : cache_indices_) {
@@ -373,6 +389,10 @@ public:
     return tot;
   }
 
+  /**
+   * @brief determines the number of servers in the RingHash
+   * @returns long long of the number of servers
+   */
   long long getNumServers(void){
     long long tot = 0;
     for (const auto&x : cache_indices_) {
@@ -381,6 +401,10 @@ public:
     return tot;
   }
 
+  /**
+   * @brief adds a server to a random (unused) location in the HashRing
+   * @returns void
+   */
   void add_random_server(void){
     int randnum = 0;
 
@@ -392,6 +416,10 @@ public:
     add_server(randnum);
   }
 
+  /**
+   * @brief Gets the keys of a particular server
+   * @returns vector<int> of keys
+   */
   vector<int>& get_keys(server_id s) {
     return cache_indices_[s];
   }
