@@ -18,7 +18,7 @@ int main ()
 
   int i, j;
   for (int blah = 1; blah < 4; ++blah) {
-  for (j = 50000; j <= 1000000; j += 25000) {
+  for (j = 50000; j <= 1000000; j += 50000) {
     RingHash r((1L << 32), 1000000);
     CuckooRings c((1L << 32), 500000);
     t1 = clock();
