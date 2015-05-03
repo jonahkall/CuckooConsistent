@@ -25,12 +25,24 @@ private:
   typedef MapType::iterator MapIterator;
   typedef std::vector<int>::iterator VectorIterator;
 
-  // This will be the key space size for both the left and the right rings.
+  /**
+   * Key space size. Indicates what the maximum key to be hashed to is
+   */
   long long kss_;
+
+  /*
+   * Tracks the number of servers
+   */
   int num_servers_;
+
+  /**
+   * Stores pointerss to the left and right rings
+   */
   RingHash* left_ring_;
   RingHash* right_ring_;
+
   unsigned insert_counter;
+
 public:
 
   /*
