@@ -18,7 +18,6 @@ cuckoomax = [0]*numloops
 i = 0
 for l in output:
   line = l.split(",")
-  print line
   line = [float(j) for j in line]
   i += 1
   if (i % 2):
@@ -37,30 +36,37 @@ ringmax = [i/size for i in ringmax]
 cuckoocost = [i/size for i in cuckoocost]
 cuckoomax = [i/size for i in cuckoomax]
 
-
 assert(len(ringtimes) == len(cuckootimes))
 
 plt.gca().set_color_cycle(['red', 'blue'])
 plt.figure(1)
-print "lol: ", len(ringtimes)
-plt.plot([50000*(i+1) for i in range(20)], ringtimes)
-plt.plot([50000*(i+1) for i in range(20)], cuckootimes)
+plt.xlabel('Number of keys hashed')
+plt.ylabel('Time (s)')
+plt.axis([80000,2020000,0,7.2])
+plt.plot([100000*(i+1) for i in range(20)], ringtimes)
+plt.plot([100000*(i+1) for i in range(20)], cuckootimes)
 
 plt.legend(['Standard Consistent Hashing', 'CuckooRings'], loc = 'upper left')
 plt.title('Time Comparison of Consistent Hashing and CuckooRings')
 
 plt.gca().set_color_cycle(['red', 'blue'])
 plt.figure(2)
-plt.plot([50000*(i+1) for i in range(20)], ringcost)
-plt.plot([50000*(i+1) for i in range(20)], cuckoocost)
+plt.xlabel('Number of keys hashed')
+plt.ylabel('Cost (average squared load)')
+plt.axis([80000,2020000,0,3])
+plt.plot([100000*(i+1) for i in range(20)], ringcost)
+plt.plot([100000*(i+1) for i in range(20)], cuckoocost)
 
 plt.legend(['Standard Consistent Hashing', 'CuckooRings'], loc = 'upper left')
 plt.title('Cost Comparison of Consistent Hashing and CuckooRings')
 
 plt.gca().set_color_cycle(['red', 'blue'])
 plt.figure(3)
-plt.plot([50000*(i+1) for i in range(20)], ringmax)
-plt.plot([50000*(i+1) for i in range(20)], cuckoomax)
+plt.xlabel('Number of keys hashed')
+plt.ylabel('Max load')
+plt.axis([80000,2020000,0,23])
+plt.scatter([100000*(i+1) for i in range(20)], ringmax, c='red')
+plt.scatter([100000*(i+1) for i in range(20)], cuckoomax)
 
 plt.legend(['Standard Consistent Hashing', 'CuckooRings'], loc = 'upper left')
 plt.title('Max Load Comparison of Consistent Hashing and CuckooRings')

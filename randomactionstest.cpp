@@ -46,7 +46,7 @@ int main ()
     t2 = clock();
     cout << ((float)(t2-t1))/CLOCKS_PER_SEC << ",";
     cout << ((float) r.cost_of_structure()) / r.getNumServers() << ",";
-    cout << r.get_max_load() << "," << r.get_max_load_server() << endl;
+    cout << r.get_max_load() << endl;
     t1 = clock();
     for (i = 0; i <= j; ++i) {
       val = i * blah;

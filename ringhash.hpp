@@ -12,6 +12,7 @@
 #include <math.h>
 #include <vector>
 
+// 2, 5, 10
 #define SERVER_THRESHOLD 2
 
 using namespace std;
@@ -62,29 +63,6 @@ public:
       cache_indices_.insert(std::make_pair( (long long) (i* (((double)key_space_size)/init_servers)),
           std::vector<int>()));
     }
-    auto x = cache_indices_.begin();
-    long long val = x->first;
-    long long first_diff;
-    int count = 0;
-    while (x != cache_indices_.end())
-    {
-      ++count;
-        ++x;
-        if (count == 1)
-        {
-          first_diff = x->first - val;
-          cout << first_diff << endl;
-        }
-        if (x == cache_indices_.end()){
-          break;
-        }
-        //cout << "added " << x->first - val << endl;
-        if (x->first - val != first_diff) {
-          //cout << "we fucked up\n";
-        }
-        val = x->first;
-    }
-    cout << (1L << 32) - cache_indices_.rbegin()->first << endl;
     hash = hashfn;
   }
 
@@ -143,21 +121,11 @@ public:
    */
   server_id lookup (long long key) {
     long long tmp = hash(key, kss_);
-    
-    //cout << tmp << endl;
-
-    //assert(tmp != 0);
     MapIterator m = cache_indices_.lower_bound(tmp);
-    if (m == cache_indices_.begin()){
-      cout << "This is bad hash" << endl;
-    }
-    //assert(m != cache_indices_.begin());
     if (m == cache_indices_.end()){
-      //cout << "bad" << endl;
       m = cache_indices_.begin();
 
     }
-    //cout << m->first << endl;
     return m->first;
   }
 

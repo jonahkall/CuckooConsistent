@@ -32,9 +32,8 @@ private:
   RingHash* right_ring_;
   unsigned insert_counter;
 public:
-  /*
   static
-  long long hash_right(long long a, long long kss_) {
+  long long hash_left(long long a, long long kss_) {
     a = (a+0x7ed55d16) + (a<<12);
     a = (a^0xc761c23c) ^ (a>>19);
     a = (a+0x165667b1) + (a<<5);
@@ -43,35 +42,6 @@ public:
     a = (a^0xb55a4f09) ^ (a>>16);
     return abs(((a % kss_) + kss_) % kss_);
   }
-  */
-
-  //TODO: this better be a more different hash function lol
-  static
-  long long hash_left(long long a, long long kss_) {
-    a = (a+0x7ed55d15) + (a<<12);
-    a = (a^0xc741c20c) ^ (a>>19);
-    a = (a+0x125667b1) + (a<<5);
-    a = (a+0xf3a2646c) ^ (a<<9);
-    a = (a+0xfd7046c5) + (a<<3);
-    a = (a^0xb55b4f09) ^ (a>>16);
-    if (a == 0){
-    cout << "This is bad hash" << endl;
-    }
-    //assert(a != 0);
-    return abs(((a % kss_) + kss_) % kss_);
-  }
-  /*
-  static
-  long long hash_left(long long key, long long kss_) {
-    util::uint128_t convert = util::Uint128(key, key);
-    long long res = util::Hash128to64(convert);
-    //assert(res != 0);
-    long long x = abs(((res % kss_) + kss_) % kss_);
-    //assert(x != 0);
-    return x;
-  }
-  */
-
   
   static
   long long hash_right(long long key, long long kss_) {
@@ -83,12 +53,7 @@ public:
   key = key ^ (key >> 28);
   key = key + (key << 31);
   
-  //assert(key != 0);
-  long long x = abs(((key % kss_) + kss_) % kss_);
-
-  //assert(x != 0);
-  return x;
-
+  return abs(((key % kss_) + kss_) % kss_);
 }
 
 
@@ -111,14 +76,12 @@ public:
     if (left_ring_->num_keys() > right_ring_->num_keys()) {
       ret = right_ring_->insert(key);
       if (ret != -1) {
-        //cout << "sending over\n";
         send_server_rtol(ret);
       }
     }
     else {
       ret = left_ring_->insert(key);
       if (ret != -1) {
-        //cout << "sending over\n";
         send_server_ltor(ret);
       }
     }
@@ -128,10 +91,8 @@ public:
   void send_server_ltor(server_id s) {
     ++insert_counter;
     if (insert_counter > STOP_ITERS) {
-      //cout << "gave up\n";
       return;
     }
-    //cout << "send l to r\n";
     server_id ret;
     vector<server_id> to_send;
     vector<int>& lserver = left_ring_->get_keys(s);
@@ -150,10 +111,8 @@ public:
   void send_server_rtol(server_id s) {
     ++insert_counter;
     if (insert_counter > STOP_ITERS) {
-      //cout << "Gave up\n";
       return;
     }
-    //cout << "send r to l\n";
     server_id ret;
     vector<server_id> to_send;
     vector<int>& rserver = right_ring_->get_keys(s);
@@ -161,7 +120,6 @@ public:
       ret = left_ring_->insert(i);
       if (ret != -1) {
         to_send.push_back(ret);
-        //send_server_ltor(ret);
       }
     }
     right_ring_->clear_server(s);
