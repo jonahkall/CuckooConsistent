@@ -13,7 +13,7 @@
 #include <vector>
 
 // 2, 5, 10
-#define SERVER_THRESHOLD 2
+#define SERVER_THRESHOLD 10
 
 using namespace std;
 
