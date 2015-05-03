@@ -2,6 +2,8 @@
  *  Tests speed benefits of a random set of insertions, along with server removals
  *  Increment j in steps to 50,000 up to 1,000,000. For each j, make Ring and CuckooRing of that many servers.
  *  For j steps, add items to the servers, and with small probability remove a server.
+ * @author Ankit Gupta
+ * @author Jonah Kallenbach
  */
 
 #include <iostream>

@@ -1,3 +1,10 @@
+/*
+ * Tests speed benefits of adding keys 
+ * @author Jonah Kallenbach
+ * @author Ankit Gupta
+ *
+ */
+
 #include <iostream>
 #include <string>
 #include <set>

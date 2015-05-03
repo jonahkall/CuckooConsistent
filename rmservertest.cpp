@@ -2,6 +2,8 @@
  *  Tests speed benefits of removing a server. 
  *  Begin by adding 1000000 items to 1000000 servers. Then remove 0 to 100000 servers (10%) by increments of 5000
  *  and track the time it takes to do that for CuckooRing and regular Ring.
+ * @author Ankit Gupta
+ * @author Jonah Kallenbach
  */
 
 #include <iostream>
