@@ -1,8 +1,10 @@
 # Script to analyze and graph runtimes from cuckoorings
 
 import matplotlib.pyplot as plt
+import sys
 
-output = open("timingoutput")
+output = open(sys.argv[1])
+
 
 ringtimes = []
 cuckootimes = []
