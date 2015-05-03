@@ -22,13 +22,15 @@ int main ()
   clock_t t1, t2, t3;
   srand (time(NULL));
 
-  int i, j;
-  for (j = 0; j <= 1000000; j += 50000) {
+  int i, j, val;
+  for (int blah = 1; blah < 4; ++blah) {
+  for (j = 50000; j <= 1000000; j += 50000) {
     RingHash r((1L << 32), j);
     CuckooRings c((1L << 32), j/2);
     t1 = clock();
 
     for (i = 0; i <= j; ++i) {
+      val = i * blah;
       int randnum = rand();
       double n = ((double) randnum / (RAND_MAX));
       if (n < .1){
@@ -38,7 +40,7 @@ int main ()
         r.add_random_server();
       }
 
-      r.insert(i);
+      r.insert(val);
     }
 
     t2 = clock();
@@ -47,6 +49,7 @@ int main ()
     cout << r.get_max_load() << endl;
     t1 = clock();
     for (i = 0; i <= j; ++i) {
+      val = i * blah;
       int randnum = rand();
       double n = ((double) randnum / (RAND_MAX));
       if (n < .1){
@@ -55,14 +58,14 @@ int main ()
       else if (n < .2){
         c.add_random_server(randnum % 2);
       }
-      c.insert(i);
+      c.insert(val);
     }
     t2 = clock();
 
     cout << ((float)(t2-t1))/CLOCKS_PER_SEC << ",";
     cout << ((float) c.cost_of_structure()) / c.getNumServers() << ",";
     cout << c.get_max_load() << endl;
-  }
+  } }
 
   return 0;
 }
