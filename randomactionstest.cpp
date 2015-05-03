@@ -41,8 +41,6 @@ int main ()
       r.insert(i);
     }
 
-
-
     t2 = clock();
     cout << ((float)(t2-t1))/CLOCKS_PER_SEC << ",";
     cout << ((float) r.cost_of_structure()) / r.getNumServers() << ",";

@@ -13,8 +13,9 @@ cuckoomax = []
 
 i = 0
 for l in output:
-	line = l.split(",")
-	line = [float(i) for i in line]
+  line = l.split(",")
+  print line
+  line = [float(j) for j in line]
   i += 1
   if (i % 2):
     ringtimes.append(line[0])
