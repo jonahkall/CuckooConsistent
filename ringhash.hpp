@@ -11,6 +11,7 @@
 #include <map>
 #include <math.h>
 #include <vector>
+#include <climits>
 
 // 2, 5, 10
 #define SERVER_THRESHOLD 10
@@ -138,13 +139,13 @@ public:
   void add_server(int server_loc) {
     
     VectorIterator it;
-    //server_id server_to_bump = cache_indices_.lower_bound(server_loc)->first;
     MapIterator m = cache_indices_.lower_bound(server_loc);
     if (m == cache_indices_.end()){
       m = cache_indices_.begin();
     }
     server_id server_to_bump = m->first;
-    // note that this works since we are putting the new server at the location of its hash
+    // note that this works since we are putting the
+    // new server at the location of its hash
 
     // make a copy of the set
     std::vector<int> keys_to_bump(cache_indices_[server_to_bump]);
@@ -248,7 +249,7 @@ public:
   }
 
   long long get_min_load(void) {
-    int sz = 99999999;
+    long long sz = LLONG_MAX;
     for (const auto&x : cache_indices_) {
       if (x.second.size() < sz) {
         sz = x.second.size();
