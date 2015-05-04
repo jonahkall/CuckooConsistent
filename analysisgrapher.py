@@ -38,38 +38,45 @@ cuckoomax = [i/size for i in cuckoomax]
 
 assert(len(ringtimes) == len(cuckootimes))
 
+plt.figure(1, figsize=(5,2))
+plt.title('Time Comparison of Consistent Hashing and CuckooRings', fontsize=10)
 plt.gca().set_color_cycle(['red', 'blue'])
-plt.figure(1)
-plt.xlabel('Number of keys hashed')
+plt.xlabel('Number of Servers removed')
 plt.ylabel('Time (s)')
-plt.axis([80000,2020000,0,7.2])
-plt.plot([100000*(i+1) for i in range(20)], ringtimes)
-plt.plot([100000*(i+1) for i in range(20)], cuckootimes)
+plt.axis([0,101000,0,6.2])
+plt.plot([5000*(i) for i in range(20)], ringtimes)
+plt.plot([5000*(i) for i in range(20)], cuckootimes)
+#plt.plot([100000*(i+1) for i in range(20)], ringtimes)
+#plt.plot([100000*(i+1) for i in range(20)], cuckootimes)
+plt.legend(['Standard Consistent Hashing', 'CuckooRings'], loc = 'upper left', prop={'size':6})
 
-plt.legend(['Standard Consistent Hashing', 'CuckooRings'], loc = 'upper left')
-plt.title('Time Comparison of Consistent Hashing and CuckooRings')
 
+
+plt.figure(2, figsize=(5,2))
 plt.gca().set_color_cycle(['red', 'blue'])
-plt.figure(2)
-plt.xlabel('Number of keys hashed')
+plt.title('Cost Comparison of Consistent Hashing and CuckooRings', fontsize=10)
+plt.xlabel('Number of Servers removed')
 plt.ylabel('Cost (average squared load)')
-plt.axis([80000,2020000,0,3])
-plt.plot([100000*(i+1) for i in range(20)], ringcost)
-plt.plot([100000*(i+1) for i in range(20)], cuckoocost)
+plt.axis([0,101000,0,5])
+plt.plot([5000*(i) for i in range(20)], ringcost)
+plt.plot([5000*(i) for i in range(20)], cuckoocost)
+plt.legend(['Standard Consistent Hashing', 'CuckooRings'], loc = 'upper left', prop={'size':6})
 
-plt.legend(['Standard Consistent Hashing', 'CuckooRings'], loc = 'upper left')
-plt.title('Cost Comparison of Consistent Hashing and CuckooRings')
 
+
+
+plt.figure(3, figsize=(5,2))
 plt.gca().set_color_cycle(['red', 'blue'])
-plt.figure(3)
-plt.xlabel('Number of keys hashed')
+plt.title('Max Load Comparison of Consistent Hashing and CuckooRings', fontsize=10)
+plt.xlabel('Number of Servers removed')
 plt.ylabel('Max load')
-plt.axis([80000,2020000,0,23])
-plt.scatter([100000*(i+1) for i in range(20)], ringmax, c='red')
-plt.scatter([100000*(i+1) for i in range(20)], cuckoomax)
+#plt.axis([80000,2020000,0,23])
+plt.axis([0,101000,0,23])
+plt.scatter([5000*(i) for i in range(20)], ringmax, c='red')
+plt.scatter([5000*(i) for i in range(20)], cuckoomax)
+plt.legend(['Standard Consistent Hashing', 'CuckooRings'], loc = 'upper left', prop={'size':6})
 
-plt.legend(['Standard Consistent Hashing', 'CuckooRings'], loc = 'upper left')
-plt.title('Max Load Comparison of Consistent Hashing and CuckooRings')
+
 
 for im in plt.gca().get_images():
   im.set_color_cycle(['red', 'blue'])
