@@ -171,7 +171,6 @@ public:
    * @brief removes a key into the HashRing
    * @brief Can be implemented by checking each ring and removing,
    *    but we left it out since we are not using it.
-   * TODO: Implement this
    */
   void remove(int key) {
     (void)key;
@@ -181,7 +180,7 @@ public:
    * #param the key that is being looked up
    * @brief Finds the server associated with a key
    * @returns server_id of the associated server
-   * @brief Not implemented. TODO: Implement this
+   * @brief Not implemented because not needed for us.
    */
   server_id lookup (int key) {
     (void)key;
@@ -191,9 +190,9 @@ public:
   /**
    * #param location where server will be put
    * @brief adds a server to the RingHash
+   *    not implemented because not needed for us
    * @returns void
    */
-   // TODO: Implement this.
   void add_server(int server_loc) {
     (void)server_loc;
   }
