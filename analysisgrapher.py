@@ -38,6 +38,7 @@ cuckoomax = [i/size for i in cuckoomax]
 
 assert(len(ringtimes) == len(cuckootimes))
 
+# runtime comparisons
 plt.figure(1, figsize=(5,2))
 plt.title('Time Comparison of Consistent Hashing and CuckooRings', fontsize=10)
 plt.gca().set_color_cycle(['red', 'blue'])
@@ -46,12 +47,10 @@ plt.ylabel('Time (s)')
 plt.axis([0,101000,0,6.2])
 plt.plot([5000*(i) for i in range(20)], ringtimes)
 plt.plot([5000*(i) for i in range(20)], cuckootimes)
-#plt.plot([100000*(i+1) for i in range(20)], ringtimes)
-#plt.plot([100000*(i+1) for i in range(20)], cuckootimes)
 plt.legend(['Standard Consistent Hashing', 'CuckooRings'], loc = 'upper left', prop={'size':6})
 
 
-
+# cost function plotting
 plt.figure(2, figsize=(5,2))
 plt.gca().set_color_cycle(['red', 'blue'])
 plt.title('Cost Comparison of Consistent Hashing and CuckooRings', fontsize=10)
@@ -64,7 +63,7 @@ plt.legend(['Standard Consistent Hashing', 'CuckooRings'], loc = 'upper left', p
 
 
 
-
+# max load plotting
 plt.figure(3, figsize=(5,2))
 plt.gca().set_color_cycle(['red', 'blue'])
 plt.title('Max Load Comparison of Consistent Hashing and CuckooRings', fontsize=10)

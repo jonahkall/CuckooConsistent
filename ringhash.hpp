@@ -38,6 +38,7 @@ long long hashstd(long long a, long long kss_) {
 class RingHash {
 private:
 
+  // Wrappers around standard C++ types
   typedef long long server_id;
   typedef std::map<unsigned long long, std::vector<int> > MapType;
   typedef MapType::iterator MapIterator;
@@ -48,7 +49,7 @@ private:
    * are the locations of the servers. The values are vectors containing the elements
    * hashed there.
    *
-   * This is implemented as a red-black tree, with amortized O(log n) 
+   * This is implemented as a red-black tree, with amortized O(log n)
    *     insertions, deletions, and lookups.
    */
   MapType cache_indices_;
@@ -74,6 +75,7 @@ public:
   RingHash(long long key_space_size, int init_servers) :
       kss_(key_space_size), num_servers_(init_servers) {
     num_keys_ = 0;
+    // Give the RingHash the default hash function.
     hash = hashstd;
     // Set up keyspace now
     for (int i = 0; i < init_servers; ++i) {

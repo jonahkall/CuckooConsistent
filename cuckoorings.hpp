@@ -36,7 +36,7 @@ private:
   int num_servers_;
 
   /**
-   * Stores pointerss to the left and right rings
+   * Stores pointers to the left and right rings
    */
   RingHash* left_ring_;
   RingHash* right_ring_;
@@ -62,7 +62,7 @@ public:
     a = (a^0xb55a4f09) ^ (a>>16);
     return abs(((a % kss_) + kss_) % kss_);
   }
-  
+
   /*
    * @brief THis is the hash function to be used by right HashRing
    * @param a the number that being hashed
