@@ -50,6 +50,7 @@ public:
    * @param a the number that being hashed
    * @param kss_ the key space size
    * @returns a hash between 0 and kss_
+   * Source: Thomas Wang, http://burtleburtle.net/bob/hash/integer.html
    */
   static
   long long hash_left(long long a, long long kss_) {
@@ -67,6 +68,7 @@ public:
    * @param a the number that being hashed
    * @param kss_ the key space size
    * @returns a hash between 0 and kss_
+   * Source: Thomas Wang via Geoffrey Irving, https://naml.us/blog/tag/thomas-wang
    */
   static
   long long hash_right(long long key, long long kss_) {

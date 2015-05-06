@@ -23,6 +23,7 @@ using namespace std;
    * @param a the number that being hashed
    * @param kss_ the key space size
    * @returns a hash between 0 and kss_
+   * Source: Thomas Wang, http://burtleburtle.net/bob/hash/integer.html
  */
 long long hashstd(long long a, long long kss_) {
   a = (a+0x7ed55d16) + (a<<12);
