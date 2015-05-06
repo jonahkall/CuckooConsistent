@@ -12,7 +12,7 @@ ringhash.hpp contains the implementation of RingHash, which CuckooRings uses
 Tests:  
 InsertKeys Test: insertiontest.cpp  
 RemoveServer Test: rmservertest.cpp  
-RandomActions Test: randomactionstest.cpp  
+RandomActions Test: randomactionstest.cpp
 
 Dependencies:
 C++11
