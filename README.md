@@ -6,12 +6,15 @@ This is a repository for the final project of Ankit Gupta and Jonah Kallenbach, 
 # Usage:
 
 Classes:
-cuckoorings.hpp contains the implementation of CuckooRings. 
+cuckoorings.hpp contains the implementation of CuckooRings
+
 ringhash.hpp contains the implementation of RingHash, which CuckooRings uses
 
 Tests:
 InsertKeys Test: insertiontest.cpp
+
 RemoveServer Test: rmservertest.cpp
+
 RandomActions Test: randomactionstest.cpp
 
 
